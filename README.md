@@ -1,81 +1,170 @@
 # Weather Data Pipeline
 
-This project implements an ETL (Extract, Transform, Load) pipeline for weather data using Apache Airflow. The pipeline extracts weather data from an API, transforms it, and loads it into a database.
+A comprehensive data pipeline for collecting, processing, and analyzing weather data using modern data engineering tools and practices.
 
-## Project Structure
+## 🚀 Features
 
-```
-weather_data_pipeline/
-├── dags/                   # Airflow DAGs directory
-│   └── weather_etl.py      # Main ETL DAG definition
-├── scripts/                # ETL scripts
-│   ├── extract.py          # Data extraction script
-│   ├── transform.py        # Data transformation script
-│   └── load.py            # Data loading script
-├── data/                   # Data directory
-│   ├── raw/               # Raw data storage
-│   ├── processed/         # Processed data storage
-│   └── interim/           # Intermediate data storage
-├── tests/                  # Test files
-│   └── __init__.py
-├── logs/                   # Airflow logs (gitignored)
-├── plugins/               # Airflow plugins directory
-├── Dockerfile             # Container definition
-├── docker-compose.yml     # Docker Compose configuration
-├── requirements.txt       # Python dependencies
-├── .env                   # Environment variables (gitignored)
-├── .gitignore            # Git ignore rules
-└── README.md             # Project documentation
-```
+- **Data Collection**: Automated weather data collection from multiple cities
+- **Data Processing**: ETL pipeline using Apache Airflow
+- **Data Storage**: PostgreSQL database for structured data storage
+- **Data Analysis**: Jupyter notebooks with PySpark for data analysis
+- **Data Visualization**: Metabase dashboards for data visualization
+- **Data Quality**: DataHub for data quality monitoring
+- **Streaming**: Kafka for real-time data streaming
+- **Big Data Processing**: Apache Spark for distributed data processing
 
-## Setup
+## 🛠️ Tech Stack
 
-1. Create a `.env` file with the following variables:
-   ```
-   WEATHER_API_KEY=your_api_key
-   DB_HOST=your_db_host
-   DB_PORT=your_db_port
-   DB_NAME=your_db_name
-   DB_USER=your_db_user
-   DB_PASSWORD=your_db_password
-   ```
+- **Orchestration**: Apache Airflow
+- **Database**: PostgreSQL
+- **Data Processing**: Apache Spark
+- **Data Analysis**: Jupyter Notebooks
+- **Data Visualization**: Metabase
+- **Data Quality**: DataHub
+- **Message Queue**: Apache Kafka
+- **Containerization**: Docker
+- **Scripting**: Python, PowerShell
 
-2. Build and start the containers:
+## 📋 Prerequisites
+
+- Docker and Docker Compose
+- PowerShell (for Windows users)
+- Git
+
+## 🚀 Getting Started
+
+1. Clone the repository:
    ```bash
-   docker-compose up --build
+   git clone https://github.com/irwansyaaah/weather-pipeline.git
+   cd weather-pipeline
    ```
 
-3. Access the Airflow web interface at `http://localhost:8080`
-
-## Dependencies
-
-- Python 3.8+
-- Apache Airflow
-- PostgreSQL
-- Docker & Docker Compose
-
-## Usage
-
-The pipeline runs automatically according to the schedule defined in the DAG. You can also trigger it manually through the Airflow web interface.
-
-## Development
-
-1. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+2. Initialize the environment:
+   ```powershell
+   .\setup.ps1 init
    ```
 
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
+3. Start the services:
+   ```powershell
+   .\setup.ps1 up
    ```
 
-3. Run tests:
-   ```bash
-   pytest tests/
-   ```
+## 🔧 Available Commands
 
-## License
+- Initialize environment:
+  ```powershell
+  .\setup.ps1 init
+  ```
 
-MIT 
+- Start services:
+  ```powershell
+  .\setup.ps1 up
+  ```
+
+- Stop services:
+  ```powershell
+  .\setup.ps1 down
+  ```
+
+- View logs:
+  ```powershell
+  .\setup.ps1 logs [service]
+  ```
+
+- Initialize database:
+  ```powershell
+  .\setup.ps1 init-db
+  ```
+
+- Test database connection:
+  ```powershell
+  .\setup.ps1 test-db
+  ```
+
+- Get Jupyter token:
+  ```powershell
+  .\setup.ps1 jupyter-token
+  ```
+
+- Restart a service:
+  ```powershell
+  .\setup.ps1 restart [service]
+  ```
+
+- Build Docker images:
+  ```powershell
+  .\setup.ps1 build [service]
+  ```
+
+- Rebuild and restart a service:
+  ```powershell
+  .\setup.ps1 rebuild [service]
+  ```
+
+- Clean environment:
+  ```powershell
+  .\setup.ps1 clean
+  ```
+
+## 🌐 Service Access
+
+- **Metabase**: http://localhost:3000
+- **Airflow**: http://localhost:8080
+- **Jupyter**: http://localhost:8888
+- **Spark UI**: http://localhost:8080
+- **DataHub**: http://localhost:9002
+- **PostgreSQL**: localhost:5432
+- **Kafka**: localhost:9092
+- **Zookeeper**: localhost:2181
+
+## 📊 Database Schema
+
+The project uses a PostgreSQL database with the following structure:
+
+### Tables
+- `weather.weather_data`: Main table for weather measurements
+- `weather.daily_weather_summary`: Daily aggregated weather data
+- `weather.city_weather_stats`: City-level weather statistics
+- `weather.weather_alerts`: Weather alerts and notifications
+- `weather.country_weather_comparison`: Country-level weather comparison
+
+### Views
+- Daily weather summary
+- City weather statistics
+- Weather alerts
+- Country weather comparison
+
+## 📈 Data Flow
+
+1. **Data Collection**: Weather data is collected from various sources
+2. **Data Processing**: Data is processed using Apache Airflow DAGs
+3. **Data Storage**: Processed data is stored in PostgreSQL
+4. **Data Analysis**: Data is analyzed using Jupyter notebooks
+5. **Data Visualization**: Results are visualized in Metabase
+6. **Data Quality**: Data quality is monitored using DataHub
+
+## 🔐 Security
+
+- All services are containerized and isolated
+- Database credentials are managed through environment variables
+- Airflow authentication is enabled
+- Metabase authentication is required
+- DataHub authentication is required
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📧 Contact
+
+Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
+
+Project Link: [https://github.com/irwansyaaah/weather-pipeline](https://github.com/irwansyaaah/weather-pipeline) 
