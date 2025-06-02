@@ -150,6 +150,7 @@ The project uses a PostgreSQL database with the following structure:
 - Airflow authentication is enabled
 - Metabase authentication is required
 - DataHub authentication is required
+<<<<<<< HEAD
 
 ## 📝 License
 
@@ -162,3 +163,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+=======
+>>>>>>> bae940fd48d2bf734813bfb689e1af4fc40c8ffb
