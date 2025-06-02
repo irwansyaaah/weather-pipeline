@@ -1,4 +1,4 @@
-version: '3'
+version: "3.8"
 
 services:
   postgres:
@@ -35,6 +35,7 @@ services:
       MB_DB_HOST: postgres
     volumes:
       - metabase_data:/metabase-data
+      - ./data/transformed:/metabase-data/data
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -70,7 +71,7 @@ services:
       - SPARK_LOCAL_IPS=spark-master
       - SPARK_PUBLIC_DNS=localhost
     ports:
-      - "8080:8080"
+      - "8083:8080"
       - "7077:7077"
     volumes:
       - spark_data:/bitnami/spark
@@ -114,18 +115,20 @@ services:
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres/airflow
-      - AIRFLOW__CORE__FERNET_KEY=''
+      - AIRFLOW__CORE__FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=True
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth
+      - AIRFLOW__WEBSERVER__WEB_SERVER_PORT=8080
+      - AIRFLOW__WEBSERVER__HOST=0.0.0.0
     volumes:
       - ./dags:/opt/airflow/dags
       - ./data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
     ports:
-      - "8080:8080"
-    command: webserver
+      - "8082:8080"
+    command: bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin && airflow webserver"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 10s
@@ -140,7 +143,7 @@ services:
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres/airflow
-      - AIRFLOW__CORE__FERNET_KEY=''
+      - AIRFLOW__CORE__FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=True
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth
@@ -150,29 +153,6 @@ services:
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
     command: scheduler
-
-  datahub-gms:
-    image: linkedin/datahub-gms:latest
-    container_name: weather_datahub_gms
-    ports:
-      - "8080:8080"
-    environment:
-      - DATAHUB_GMS_HOST=localhost
-      - DATAHUB_GMS_PORT=8080
-      - ENTITY_REGISTRY_CONFIG_PATH=/datahub/datahub-gms/resources/entity-registry.yml
-    volumes:
-      - datahub_data:/datahub/datahub-gms
-
-  datahub-frontend:
-    image: linkedin/datahub-frontend-react:latest
-    container_name: weather_datahub_frontend
-    ports:
-      - "9002:9002"
-    environment:
-      - REACT_APP_GMS_HOST=localhost
-      - REACT_APP_GMS_PORT=8080
-    depends_on:
-      - datahub-gms
 
   docker-build:
     image: docker:latest
